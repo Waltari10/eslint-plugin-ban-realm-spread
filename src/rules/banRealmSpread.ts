@@ -14,7 +14,9 @@ export default createRule({
     },
     messages: {
       noRealmSpread:
-        'Dont spread "{{name}}"! Spread operator does not work on Realm results.',
+        'Dont spread "{type}"! Spread operator does not work on Realm objects.',
+      noRealmSpreadName:
+        'Dont spread "{type}" "{{name}}"! Spread operator does not work on Realm objects.',
     },
     schema: [{}],
   },
@@ -52,7 +54,10 @@ export default createRule({
             ) {
               context.report({
                 node,
-                messageId: "noRealmSpread",
+                //@ts-ignore
+                messageId: node?.argument?.name
+                  ? "noRealmSpreadName"
+                  : "noRealmSpread",
                 data: {
                   //@ts-ignore
                   name: node?.argument?.name,
@@ -79,10 +84,14 @@ export default createRule({
           if (parentName === "Realm" && type === "Object") {
             context.report({
               node,
-              messageId: "noRealmSpread",
+              //@ts-ignore
+              messageId: node?.argument?.name
+                ? "noRealmSpreadName"
+                : "noRealmSpread",
               data: {
                 //@ts-ignore
-                name: node?.argument?.name,
+                name: node?.argument?.name || "",
+                type: parentName + "." + type,
               },
             });
           }

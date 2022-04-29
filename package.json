@@ -1,8 +1,20 @@
 {
-  "name": "eslint-plugin-ban-realm-spread",
+  "name": "@waltari/eslint-plugin-ban-realm-spread",
   "version": "1.0.0",
   "description": "ESlint rule to ban spreading Realm objects",
   "main": "dist/index.js",
+  "files": [
+    "dist/*.js",
+    "dist/**/*.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Waltari10/eslint-plugin-ban-realm-spread.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Waltari10/eslint-plugin-ban-realm-spread/issues"
+  },
+  "homepage": "https://github.com/Waltari10/eslint-plugin-ban-realm-spread#readme",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",

@@ -1,11 +1,30 @@
-# How to install
+## How to install
 
-In this monorepos subfolder simply run:
+Requires typescript to be setup for ESlint and your project. Check quick start instructions from here to install: https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
 
-`yarn add ../eslint-plugin-veri`
+Only warns about Realm.Object Typescript type. If your Realm.Object has any other type this will not work.
 
-Then in .eslintrc add:
+After that install plugin by:
 
-` plugins: [ "veri" ]`
+```bash
+$ yarn add -D @waltari/eslint-plugin-ban-realm-spread
+$ npm i --save-dev @waltari/eslint-plugin-ban-realm-spread
+```
 
-and
+### Usage
+
+Add `@waltari/ban-realm-spread` to the plugins in `.eslintrc` configuration file, then add the ban-realm-spread rule to rules section.
+
+```json
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@waltari/ban-realm-spread"],
+  "rules": {
+    "@waltari/ban-realm-spread/ban-realm-spread": "error"
+  }
+}
+```
+
+This package only has "@waltari/ban-realm-spread/ban-realm-spread" rule.
+
+Feel free to post any issues or improvement ideas in Github issues <3

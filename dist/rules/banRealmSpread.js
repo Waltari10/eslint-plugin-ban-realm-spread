@@ -13,7 +13,8 @@ exports.default = (0, utils_2.createRule)({
             recommended: "error",
         },
         messages: {
-            noRealmSpread: 'Dont spread "{{name}}"! Spread operator does not work on Realm results.',
+            noRealmSpread: 'Dont spread "{type}"! Spread operator does not work on Realm objects.',
+            noRealmSpreadName: 'Dont spread "{type}" "{{name}}"! Spread operator does not work on Realm objects.',
         },
         schema: [{}],
     },
@@ -24,7 +25,7 @@ exports.default = (0, utils_2.createRule)({
         const checker = (_a = parserServices === null || parserServices === void 0 ? void 0 : parserServices.program) === null || _a === void 0 ? void 0 : _a.getTypeChecker();
         return {
             SpreadElement(node) {
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
                 const expression = parserServices.esTreeNodeToTSNodeMap.get(node.argument);
                 // Handle intersection type
                 if (checker === null || checker === void 0 ? void 0 : checker.getTypeAtLocation(expression).isIntersection()) {
@@ -43,10 +44,13 @@ exports.default = (0, utils_2.createRule)({
                             ((_f = (_e = (_d = type === null || type === void 0 ? void 0 : type.symbol) === null || _d === void 0 ? void 0 : _d.parent) === null || _e === void 0 ? void 0 : _e.escapedName) === null || _f === void 0 ? void 0 : _f.toString())) {
                             context.report({
                                 node,
-                                messageId: "noRealmSpread",
+                                //@ts-ignore
+                                messageId: ((_g = node === null || node === void 0 ? void 0 : node.argument) === null || _g === void 0 ? void 0 : _g.name)
+                                    ? "noRealmSpreadName"
+                                    : "noRealmSpread",
                                 data: {
                                     //@ts-ignore
-                                    name: (_g = node === null || node === void 0 ? void 0 : node.argument) === null || _g === void 0 ? void 0 : _g.name,
+                                    name: (_h = node === null || node === void 0 ? void 0 : node.argument) === null || _h === void 0 ? void 0 : _h.name,
                                 },
                             });
                         }
@@ -54,23 +58,27 @@ exports.default = (0, utils_2.createRule)({
                 }
                 else {
                     // Handle non intersection type
-                    const symbol = (_h = checker === null || checker === void 0 ? void 0 : checker.getTypeAtLocation(expression)) === null || _h === void 0 ? void 0 : _h.getSymbol();
+                    const symbol = (_j = checker === null || checker === void 0 ? void 0 : checker.getTypeAtLocation(expression)) === null || _j === void 0 ? void 0 : _j.getSymbol();
                     // @ts-ignore
                     if (!(symbol === null || symbol === void 0 ? void 0 : symbol.parent)) {
                         return;
                     }
                     // Namespace name
                     // @ts-ignore
-                    const parentName = ((_k = (_j = symbol === null || symbol === void 0 ? void 0 : symbol.parent) === null || _j === void 0 ? void 0 : _j.escapedName) === null || _k === void 0 ? void 0 : _k.toString()) || "";
+                    const parentName = ((_l = (_k = symbol === null || symbol === void 0 ? void 0 : symbol.parent) === null || _k === void 0 ? void 0 : _k.escapedName) === null || _l === void 0 ? void 0 : _l.toString()) || "";
                     // Name of type in namespace
-                    const type = ((_l = symbol === null || symbol === void 0 ? void 0 : symbol.escapedName) === null || _l === void 0 ? void 0 : _l.toString()) || "";
+                    const type = ((_m = symbol === null || symbol === void 0 ? void 0 : symbol.escapedName) === null || _m === void 0 ? void 0 : _m.toString()) || "";
                     if (parentName === "Realm" && type === "Object") {
                         context.report({
                             node,
-                            messageId: "noRealmSpread",
+                            //@ts-ignore
+                            messageId: ((_o = node === null || node === void 0 ? void 0 : node.argument) === null || _o === void 0 ? void 0 : _o.name)
+                                ? "noRealmSpreadName"
+                                : "noRealmSpread",
                             data: {
                                 //@ts-ignore
-                                name: (_m = node === null || node === void 0 ? void 0 : node.argument) === null || _m === void 0 ? void 0 : _m.name,
+                                name: ((_p = node === null || node === void 0 ? void 0 : node.argument) === null || _p === void 0 ? void 0 : _p.name) || "",
+                                type: parentName + "." + type,
                             },
                         });
                     }
